@@ -11,12 +11,12 @@
 
 <script>
 export default {
-  metaInfo() {
+  metaInfo () {
     return {
-      title: "Tasogare Translation Tool"
-    };
+      title: 'Tasogare Translation Tool'
+    }
   }
-};
+}
 </script>
 
 <style>

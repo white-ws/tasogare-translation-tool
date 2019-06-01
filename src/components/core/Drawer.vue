@@ -9,17 +9,29 @@
     mobile-break-point="991"
     width="260"
   >
-    <v-img :src="image" :gradient="sidebarOverlayGradiant" height="100%">
-      <v-layout class="fill-height" tag="v-list" column>
+    <v-img
+      :src="image"
+      :gradient="sidebarOverlayGradiant"
+      height="100%">
+      <v-layout
+        class="fill-height"
+        tag="v-list"
+        column>
         <v-list-tile avatar>
           <v-list-tile-avatar color="white">
-            <v-img :src="logo" height="46" contain/>
+            <v-img
+              :src="logo"
+              height="46"
+              contain/>
           </v-list-tile-avatar>
           <v-list-tile-title class="title">Translation Tool</v-list-tile-title>
         </v-list-tile>
         <v-divider/>
         <v-list-tile v-if="responsive">
-          <v-text-field class="purple-input search-input" label="Search..." color="purple"/>
+          <v-text-field
+            class="purple-input search-input"
+            label="Search..."
+            color="purple"/>
         </v-list-tile>
         <v-list-tile
           v-for="(link, i) in links"
@@ -41,57 +53,57 @@
 
 <script>
 // Utilities
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   data: () => ({
-    logo: "./img/logo.png",
+    logo: './img/logo.png',
     links: [
       {
-        to: "/dashboard",
-        icon: "mdi-dictionary",
-        text: "Translate"
+        to: '/dashboard',
+        icon: 'mdi-dictionary',
+        text: 'Translate'
       }
     ],
     responsive: false
   }),
   computed: {
-    ...mapState("app", ["image", "color"]),
+    ...mapState('app', ['image', 'color']),
     inputValue: {
-      get() {
-        return this.$store.state.app.drawer;
+      get () {
+        return this.$store.state.app.drawer
       },
-      set(val) {
-        this.setDrawer(val);
+      set (val) {
+        this.setDrawer(val)
       }
     },
-    items() {
-      return this.$t("Layout.View.items");
+    items () {
+      return this.$t('Layout.View.items')
     },
-    sidebarOverlayGradiant() {
+    sidebarOverlayGradiant () {
       return `${this.$store.state.app.sidebarBackgroundColor}, ${
         this.$store.state.app.sidebarBackgroundColor
-      }`;
+      }`
     }
   },
-  mounted() {
-    this.onResponsiveInverted();
-    window.addEventListener("resize", this.onResponsiveInverted);
+  mounted () {
+    this.onResponsiveInverted()
+    window.addEventListener('resize', this.onResponsiveInverted)
   },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.onResponsiveInverted);
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResponsiveInverted)
   },
   methods: {
-    ...mapMutations("app", ["setDrawer", "toggleDrawer"]),
-    onResponsiveInverted() {
+    ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
+    onResponsiveInverted () {
       if (window.innerWidth < 991) {
-        this.responsive = true;
+        this.responsive = true
       } else {
-        this.responsive = false;
+        this.responsive = false
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

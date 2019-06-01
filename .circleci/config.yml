@@ -1,0 +1,59 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install dependency changes
+          command: npm install
+      - save_cache:
+          key: dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Linter check
+          command: npm run lint
+      - run:
+          name: Make production build
+          command: |
+            echo VUE_APP_KEY=${GOOGLE_KEY} >> .env
+            npm run build
+      - persist_to_workspace:
+          root: .
+          paths: dist/*
+  deploy:
+    docker:
+      - image: circleci/python
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install tools
+          command: |
+            sudo pip install awscli
+            aws --version
+      - run:
+          name: Clean up S3 bucket
+          command: aws s3 rm s3://tasogare-translation-tool --recursive
+      - run:
+          name: Deploy new build
+          command: |
+            aws s3 sync dist/ s3://tasogare-translation-tool
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
