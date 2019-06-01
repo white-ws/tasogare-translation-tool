@@ -18,6 +18,8 @@
 </template>
 
 <script>
+const io = require('../utils/io');
+
 export default {
   data() {
     return {};
@@ -26,6 +28,13 @@ export default {
     onFileInput(event) {
       const filePath = event.target.value;
       console.log(filePath);
+
+      const reader = new io.Reader(event.target.files[0], () => {
+        while (reader.hasNext()) {
+          console.log(reader.next());
+          // TODO
+        }
+      });
     }
   }
 };
