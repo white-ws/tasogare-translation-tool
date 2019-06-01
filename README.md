@@ -13,9 +13,9 @@ Tasogare Translation Tool is a Japanese to Vietnamese language translation tool,
 - A new tab will be opened in your browser
 
 ## Reporting Issues
-We use GitHub Issues as the official bug tracker for the Vuetify Material Dashboard. Here are some advices for our users that want to report an issue:
+We use GitHub Issues as the official bug tracker for the Tasogare Translation Tool. Here are some advices for our users that want to report an issue:
 
-1. Make sure that you are using the latest version of the Vuetify Material Dashboard. Check the CHANGELOG from your dashboard on our [website](https://www.creative-tim.com/).
+1. Make sure that you are using the latest version of the Vuetify Material Dashboard. Check the CHANGELOG Vuetify Material Dashboard [website](https://www.creative-tim.com/).
 2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.
 3. Some issues may be browser specific, so specifying in what browser you encountered the issue might help.
 

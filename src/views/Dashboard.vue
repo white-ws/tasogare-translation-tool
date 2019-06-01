@@ -33,7 +33,7 @@
 </template>
 
 <script>
-const io = require('../utils/io');
+const io = require("../utils/io");
 
 export default {
   data() {
@@ -56,44 +56,7 @@ export default {
           value: "chinese"
         }
       ],
-      items: [
-        {
-          origin: "Dakota Rice",
-          vietnam: "Niger",
-          english: "Oud-Tunrhout",
-          chinese: "$35,738"
-        },
-        {
-          origin: "Minerva Hooper",
-          vietnam: "Curaçao",
-          english: "Sinaai-Waas",
-          chinese: "$23,738"
-        },
-        {
-          origin: "Sage Rodriguez",
-          vietnam: "Netherlands",
-          english: "Overland Park",
-          chinese: "$56,142"
-        },
-        {
-          origin: "Philip Chanley",
-          vietnam: "Korea, South",
-          english: "Gloucester",
-          chinese: "$38,735"
-        },
-        {
-          origin: "Doris Greene",
-          vietnam: "Malawi",
-          english: "Feldkirchen in Kārnten",
-          chinese: "$63,542"
-        },
-        {
-          origin: "Mason Porter",
-          vietnam: "Chile",
-          english: "Gloucester",
-          chinese: "$78,615"
-        }
-      ]
+      items: []
     };
   },
   computed: {
@@ -119,8 +82,10 @@ export default {
             englishToVn: "hogen en vn",
             chinese: "hoge cn",
             chineseToVn: "hoge cn vn"
-          })
+          });
         }
+
+        this.items = items;
 
         let writer = new io.Writer();
         writer.save(items);
