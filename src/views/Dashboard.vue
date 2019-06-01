@@ -11,6 +11,21 @@
             <v-btn color="success" @click="$refs.inputUpload.click()" type="file">Upload</v-btn>
             <input v-show="false" ref="inputUpload" type="file" @change="onFileInput">
           </div>
+
+          <v-data-table :headers="headers" :items="items" hide-actions v-if="doShowResult">
+            <template slot="headerCell" slot-scope="{ header }">
+              <span
+                class="subheading font-weight-light text-success text--darken-3"
+                v-text="header.text"
+              />
+            </template>
+            <template slot="items" slot-scope="{ item }">
+              <td>{{ item.origin }}</td>
+              <td>{{ item.vietnam }}</td>
+              <td>{{ item.english }}</td>
+              <td>{{ item.chinese }}</td>
+            </template>
+          </v-data-table>
         </material-card>
       </v-flex>
     </v-layout>
@@ -20,7 +35,69 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      headers: [
+        {
+          text: "Input",
+          value: "origin"
+        },
+        {
+          text: "Vietnamese",
+          value: "vietnam"
+        },
+        {
+          text: "English-Vietnamese",
+          value: "english"
+        },
+        {
+          text: "Chinese-Vietnamese",
+          value: "chinese"
+        }
+      ],
+      items: [
+        {
+          origin: "Dakota Rice",
+          vietnam: "Niger",
+          english: "Oud-Tunrhout",
+          chinese: "$35,738"
+        },
+        {
+          origin: "Minerva Hooper",
+          vietnam: "Curaçao",
+          english: "Sinaai-Waas",
+          chinese: "$23,738"
+        },
+        {
+          origin: "Sage Rodriguez",
+          vietnam: "Netherlands",
+          english: "Overland Park",
+          chinese: "$56,142"
+        },
+        {
+          origin: "Philip Chanley",
+          vietnam: "Korea, South",
+          english: "Gloucester",
+          chinese: "$38,735"
+        },
+        {
+          origin: "Doris Greene",
+          vietnam: "Malawi",
+          english: "Feldkirchen in Kārnten",
+          chinese: "$63,542"
+        },
+        {
+          origin: "Mason Porter",
+          vietnam: "Chile",
+          english: "Gloucester",
+          chinese: "$78,615"
+        }
+      ]
+    };
+  },
+  computed: {
+    doShowResult() {
+      return this.items && this.items.length > 0;
+    }
   },
   methods: {
     onFileInput(event) {
