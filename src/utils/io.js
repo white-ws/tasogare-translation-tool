@@ -22,9 +22,30 @@ export class Reader {
     if (this.hasNext()) {
       var value = this.words[this.pointer]
       this.pointer++
-      return value
+      return value.trim()
     }
 
     return null
+  }
+}
+
+export class Writer {
+  save (items) {
+    var content = 'origin,vietnam,english,englishToVn,chinese,chineseToVn\n'
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i]
+      var line = item.origin + ',' + item.vietnam + ',' + item.english + ',' + item.englishToVn + ',' + item.chinese + ',' + item.chineseToVn + '\n'
+      content = content.concat(line)
+    }
+
+    this.download(content, 'result.csv', 'text/plain')
+  }
+
+  download (content, fileName, contentType) {
+    var a = document.createElement('a')
+    var file = new Blob([content], { type: contentType })
+    a.href = URL.createObjectURL(file)
+    a.download = fileName
+    a.click()
   }
 }
