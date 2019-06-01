@@ -1,5 +1,8 @@
 <template>
-  <v-container fill-height fluid grid-list-xl>
+  <v-container
+    fill-height
+    fluid
+    grid-list-xl>
     <v-layout wrap>
       <v-flex>
         <material-card
@@ -14,18 +17,34 @@
               type="file"
               @click="$refs.inputUpload.click()"
             >Upload</v-btn>
-            <input v-show="false" ref="inputUpload" type="file" @change="onFileInput">
-            <v-progress-circular v-if="loading.status" :width="3" color="green" indeterminate/>
+            <input
+              v-show="false"
+              ref="inputUpload"
+              type="file"
+              @change="onFileInput">
+            <v-progress-circular
+              v-if="loading.status"
+              :width="3"
+              color="green"
+              indeterminate/>
           </div>
 
-          <v-data-table v-if="doShowResult" :headers="headers" :items="items" hide-actions>
-            <template slot="headerCell" slot-scope="{ header }">
+          <v-data-table
+            v-if="doShowResult"
+            :headers="headers"
+            :items="items"
+            hide-actions>
+            <template
+              slot="headerCell"
+              slot-scope="{ header }">
               <span
                 class="subheading font-weight-light text-success text--darken-3"
                 v-text="header.text"
               />
             </template>
-            <template slot="items" slot-scope="{ item }">
+            <template
+              slot="items"
+              slot-scope="{ item }">
               <td>{{ item.origin }}</td>
               <td>{{ item.vietnam }}</td>
               <td>{{ item.englishToVn }}</td>
@@ -39,55 +58,55 @@
 </template>
 
 <script>
-const io = require("../utils/io");
-const api = require("../utils/api");
+const io = require('../utils/io')
+const api = require('../utils/api')
 
 export default {
-  data() {
+  data () {
     return {
       headers: [
         {
-          text: "Input",
-          value: "origin"
+          text: 'Input',
+          value: 'origin'
         },
         {
-          text: "Vietnamese",
-          value: "vietnam"
+          text: 'Vietnamese',
+          value: 'vietnam'
         },
         {
-          text: "English-Vietnamese",
-          value: "englishToVn"
+          text: 'English-Vietnamese',
+          value: 'englishToVn'
         },
         {
-          text: "Chinese-Vietnamese",
-          value: "chineseToVn"
+          text: 'Chinese-Vietnamese',
+          value: 'chineseToVn'
         }
       ],
       items: [],
       loading: {
         status: false
       }
-    };
+    }
   },
   computed: {
-    doShowResult() {
-      return this.items && this.items.length > 0;
+    doShowResult () {
+      return this.items && this.items.length > 0
     }
   },
   methods: {
-    onFileInput(event) {
-      this.loading.status = true;
-      const key = process.env.VUE_APP_KEY;
-      let items = [];
+    onFileInput (event) {
+      this.loading.status = true
+      const key = process.env.VUE_APP_KEY
+      let items = []
 
       const reader = new io.Reader(event.target.files[0], () => {
         while (reader.hasNext()) {
-          var word = reader.next();
-          items.push(word);
+          var word = reader.next()
+          items.push(word)
         }
 
-        let cloudApi = new api.GoogleCloud(key, items);
-        let self = this;
+        let cloudApi = new api.GoogleCloud(key, items)
+        let self = this
         cloudApi
           .trans()
           .then(res => {
@@ -99,24 +118,24 @@ export default {
                 englishToVn: cloudApi.englishToVn[index],
                 chinese: cloudApi.chinese[index],
                 chineseToVn: cloudApi.chineseToVn[index]
-              });
-            });
+              })
+            })
 
-            this.items = self.items;
-            let writer = new io.Writer();
-            writer.save(self.items);
-            this.$toastr.success("Done!");
+            this.items = self.items
+            let writer = new io.Writer()
+            writer.save(self.items)
+            this.$toastr.success('Done!')
           })
           .catch(() => {
-            this.$toastr.error("Oops! Something unexpected happened!");
+            this.$toastr.error('Oops! Something unexpected happened!')
           })
           .then(() => {
-            this.loading.status = false;
-          });
-      });
+            this.loading.status = false
+          })
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
