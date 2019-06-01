@@ -23,7 +23,9 @@
               <td>{{ item.origin }}</td>
               <td>{{ item.vietnam }}</td>
               <td>{{ item.english }}</td>
+              <td>{{ item.englishToVn }}</td>
               <td>{{ item.chinese }}</td>
+              <td>{{ item.chineseToVn }}</td>
             </template>
           </v-data-table>
         </material-card>
@@ -34,6 +36,7 @@
 
 <script>
 const io = require("../utils/io");
+const api = require("../utils/api");
 
 export default {
   data() {
@@ -48,12 +51,20 @@ export default {
           value: "vietnam"
         },
         {
-          text: "English-Vietnamese",
+          text: "English",
           value: "english"
         },
         {
-          text: "Chinese-Vietnamese",
+          text: "English-Vietnamese",
+          value: "englishToVn"
+        },
+        {
+          text: "Chinese",
           value: "chinese"
+        },
+        {
+          text: "Chinese-Vietnamese",
+          value: "chineseToVn"
         }
       ],
       items: []
@@ -66,31 +77,37 @@ export default {
   },
   methods: {
     onFileInput(event) {
-      const filePath = event.target.value;
-      console.log(filePath);
+        const filePath = event.target.value;
+        const key = 'Google Cloud Key';
+        let items = [];
 
-      var items = [];
-      const reader = new io.Reader(event.target.files[0], () => {
+        const reader = new io.Reader(event.target.files[0], () => {
         while (reader.hasNext()) {
-          var word = reader.next();
-          console.log(word);
-
-          items.push({
-            origin: word,
-            vietnam: "hogevn",
-            english: "hogeen",
-            englishToVn: "hogen en vn",
-            chinese: "hoge cn",
-            chineseToVn: "hoge cn vn"
-          });
+            var word = reader.next();
+            items.push(word);
         }
 
-        this.items = items;
+        let cloudApi = new api.GoogleCloud(key, items);
+        let self = this;
+        cloudApi.trans().then(res => {
+            cloudApi.words.forEach((item, index) => {
+                self.items.push({
+                    origin: cloudApi.words[index],
+                    vietnam: cloudApi.vietnamese[index],
+                    english: cloudApi.english[index],
+                    englishToVn: cloudApi.englishToVn[index],
+                    chinese: cloudApi.chinese[index],
+                    chineseToVn: cloudApi.chineseToVn[index],
+                });
+            })
 
-        let writer = new io.Writer();
-        writer.save(items);
+            let writer = new io.Writer();
+            writer.save(self.items);
+        });
+
       });
     }
+
   }
 };
 </script>
