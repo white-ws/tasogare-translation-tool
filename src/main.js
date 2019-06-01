@@ -2,6 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 
+import VueToastr2 from 'vue-toastr-2'
+import 'vue-toastr-2/dist/vue-toastr-2.min.css'
+
 // Components
 import './components'
 
@@ -22,6 +25,9 @@ sync(store, router)
 
 Vue.config.productionTip = false
 
+window.toastr = require('toastr')
+
+Vue.use(VueToastr2)
 /* eslint-disable no-new */
 new Vue({
   i18n,
