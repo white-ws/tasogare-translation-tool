@@ -106,11 +106,24 @@ export default {
       const filePath = event.target.value;
       console.log(filePath);
 
+      var items = [];
       const reader = new io.Reader(event.target.files[0], () => {
         while (reader.hasNext()) {
-          console.log(reader.next());
-          // TODO
+          var word = reader.next();
+          console.log(word);
+
+          items.push({
+            origin: word,
+            vietnam: "hogevn",
+            english: "hogeen",
+            englishToVn: "hogen en vn",
+            chinese: "hoge cn",
+            chineseToVn: "hoge cn vn"
+          })
         }
+
+        let writer = new io.Writer();
+        writer.save(items);
       });
     }
   }
