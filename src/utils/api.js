@@ -37,7 +37,7 @@ export class GoogleCloud {
             }
             formData.append('q', word);
 
-            if ((index + 1) % 100 == 0 || index == words.length - 1) {
+            if ((index + 1) % 100 === 0 || index === words.length - 1) {
                 formDataList.push(formData);
                 formData = null;
             }
