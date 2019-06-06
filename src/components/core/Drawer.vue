@@ -63,6 +63,11 @@ export default {
         to: '/dashboard',
         icon: 'mdi-dictionary',
         text: 'Translate'
+      },
+      {
+        to: '/kanji-converter',
+        icon: 'mdi-format-font',
+        text: 'Kanji Converter'
       }
     ],
     responsive: false
