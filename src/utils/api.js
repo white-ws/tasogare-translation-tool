@@ -1,18 +1,18 @@
 const axios = require('axios')
 
 export class GoogleCloud {
-    url = 'https://translation.googleapis.com/language/translate/v2';
-    key = '';
-    words = null;
-    vietnamese = [];
-    english = [];
-    chinese = [];
-    englishToVn = [];
-    chineseToVn = [];
+    url = 'https://translation.googleapis.com/language/translate/v2'
+    key = ''
+    words = null
+    vietnamese = []
+    english = []
+    chinese = []
+    englishToVn = []
+    chineseToVn = []
 
     constructor(key, words) {
         this.words = words
-        this.key = key;
+        this.key = key
     }
 
     async trans() {
@@ -24,22 +24,22 @@ export class GoogleCloud {
     }
 
     async translate(words, source, target) {
-        if (!words) return;
-        let formDataList = [];
-        let formData = null;
-        let translated = [];
+        if (!words) return
+        let formDataList = []
+        let formData = null
+        let translated = []
         words.forEach((word, index) => {
             if (!formData) {
                 formData = new FormData();
-                formData.set('key', this.key);
-                formData.set('source', source);
-                formData.set('target', target);
+                formData.set('key', this.key)
+                formData.set('source', source)
+                formData.set('target', target)
             }
             formData.append('q', word);
 
             if ((index + 1) % 100 === 0 || index === words.length - 1) {
                 formDataList.push(formData);
-                formData = null;
+                formData = null
             }
         })
 
@@ -49,10 +49,10 @@ export class GoogleCloud {
                 url: this.url,
                 data: formDataList[index]
             })
-            translated.push(...this.formatResponse(res.data));
+            translated.push(...this.formatResponse(res.data))
         }
 
-        return translated;
+        return translated
     }
 
     formatResponse(data) {
