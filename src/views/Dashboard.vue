@@ -46,7 +46,6 @@
               slot="items"
               slot-scope="{ item }">
               <td>{{ item.origin }}</td>
-              <td>{{ item.hiragana }}</td>
               <td>{{ item.vietnam }}</td>
               <td>{{ item.englishToVn }}</td>
               <td>{{ item.chineseToVn }}</td>
@@ -61,7 +60,6 @@
 <script>
 const io = require('../utils/io')
 const api = require('../utils/api')
-const converter = require('../utils/converter')
 
 export default {
   data () {
@@ -70,10 +68,6 @@ export default {
         {
           text: 'Input',
           value: 'origin'
-        },
-        {
-          text: 'Hiragana',
-          value: 'hiragana'
         },
         {
           text: 'Vietnamese',
@@ -118,7 +112,6 @@ export default {
             this.$toastr.success('Done!')
           })
           .catch((res) => {
-            console.log(res)
             this.$toastr.error('Oops! Something unexpected happened!')
           })
           .then(() => {
@@ -128,9 +121,6 @@ export default {
     },
 
     async onProcessInput(words) {
-      let japanese = new converter.Japanese();
-      await japanese.toHiragara(words);
-
       const key = process.env.VUE_APP_KEY
       let cloudApi = new api.GoogleCloud(key, words)
       await cloudApi.trans()
@@ -138,7 +128,6 @@ export default {
       words.forEach((word, index) => {
         this.items.push({
           origin: cloudApi.words[index],
-          hiragana: japanese.hiraganaWords[word],
           vietnam: cloudApi.vietnamese[index],
           english: cloudApi.english[index],
           englishToVn: cloudApi.englishToVn[index],
