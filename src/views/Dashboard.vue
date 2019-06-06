@@ -46,6 +46,7 @@
               slot="items"
               slot-scope="{ item }">
               <td>{{ item.origin }}</td>
+              <td>{{ item.hiragana }}</td>
               <td>{{ item.vietnam }}</td>
               <td>{{ item.englishToVn }}</td>
               <td>{{ item.chineseToVn }}</td>
@@ -60,6 +61,7 @@
 <script>
 const io = require('../utils/io')
 const api = require('../utils/api')
+const converter = require('../utils/converter')
 
 export default {
   data () {
@@ -68,6 +70,10 @@ export default {
         {
           text: 'Input',
           value: 'origin'
+        },
+        {
+          text: 'Hiragana',
+          value: 'hiragana'
         },
         {
           text: 'Vietnamese',
@@ -100,38 +106,47 @@ export default {
       let items = []
 
       const reader = new io.Reader(event.target.files[0], () => {
+        let self = this;
+        let words = []
+
         while (reader.hasNext()) {
-          var word = reader.next()
-          items.push(word)
+          words.push(reader.next())
         }
 
-        let cloudApi = new api.GoogleCloud(key, items)
-        let self = this
-        cloudApi
-          .trans()
-          .then(res => {
-            cloudApi.words.forEach((item, index) => {
-              self.items.push({
-                origin: cloudApi.words[index],
-                vietnam: cloudApi.vietnamese[index],
-                english: cloudApi.english[index],
-                englishToVn: cloudApi.englishToVn[index],
-                chinese: cloudApi.chinese[index],
-                chineseToVn: cloudApi.chineseToVn[index]
-              })
-            })
-
-            this.items = self.items
+        this.onProcessInput(words)
+          .then(() => {
             let writer = new io.Writer()
             writer.save(self.items)
             this.$toastr.success('Done!')
           })
-          .catch(() => {
+          .catch((res) => {
+            console.log(res)
             this.$toastr.error('Oops! Something unexpected happened!')
           })
           .then(() => {
             this.loading.status = false
           })
+      })
+    },
+
+    async onProcessInput(words) {
+      let japanese = new converter.Japanese();
+      await japanese.toHiragara(words);
+
+      const key = process.env.VUE_APP_KEY
+      let cloudApi = new api.GoogleCloud(key, words)
+      await cloudApi.trans()
+
+      words.forEach((word, index) => {
+        this.items.push({
+          origin: cloudApi.words[index],
+          hiragana: japanese.hiraganaWords[word],
+          vietnam: cloudApi.vietnamese[index],
+          english: cloudApi.english[index],
+          englishToVn: cloudApi.englishToVn[index],
+          chinese: cloudApi.chinese[index],
+          chineseToVn: cloudApi.chineseToVn[index]
+        })
       })
     }
   }

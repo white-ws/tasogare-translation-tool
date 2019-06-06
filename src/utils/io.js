@@ -31,10 +31,10 @@ export class Reader {
 
 export class Writer {
   save (items) {
-    var content = 'origin,vietnam,english,englishToVn,chinese,chineseToVn\n'
+    var content = 'origin,hiragana,vietnam,english,englishToVn,chinese,chineseToVn\n'
     for (var i = 0; i < items.length; i++) {
       var item = items[i]
-      var line = item.origin + ',' + item.vietnam + ',' + item.english + ',' + item.englishToVn + ',' + item.chinese + ',' + item.chineseToVn + '\n'
+      var line = item.origin + ','  + item.hiragana + ',' + item.vietnam + ',' + item.english + ',' + item.englishToVn + ',' + item.chinese + ',' + item.chineseToVn + '\n'
       content = content.concat(line)
     }
 
