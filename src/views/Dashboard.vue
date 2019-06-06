@@ -98,7 +98,7 @@ export default {
       this.loading.status = true
 
       const reader = new io.Reader(event.target.files[0], () => {
-        let self = this;
+        let self = this
         let words = []
 
         while (reader.hasNext()) {
@@ -120,7 +120,7 @@ export default {
       })
     },
 
-    async onProcessInput(words) {
+    async onProcessInput (words) {
       const key = process.env.VUE_APP_KEY
       let cloudApi = new api.GoogleCloud(key, words)
       await cloudApi.trans()

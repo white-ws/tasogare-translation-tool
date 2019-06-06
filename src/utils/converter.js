@@ -1,10 +1,10 @@
-import Kuroshiro from "kuroshiro";
-import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
+import Kuroshiro from 'kuroshiro';
+import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji';
 
 const kuroshiro = new Kuroshiro();
 
 export class Japanese {
-	hiraganaWords = {};
+  hiraganaWords = {};
 
 	async toHiragara(words) {
 		if (!words) return

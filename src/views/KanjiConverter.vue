@@ -88,7 +88,7 @@ export default {
       this.loading.status = true
 
       const reader = new io.Reader(event.target.files[0], () => {
-        let self = this;
+        let self = this
         let words = []
 
         while (reader.hasNext()) {
@@ -109,15 +109,14 @@ export default {
           })
       })
     },
-
-    async onProcessInput(words) {
-      let japanese = new converter.Japanese();
-      await japanese.toHiragara(words);
+    async onProcessInput (words) {
+      let japanese = new converter.Japanese()
+      await japanese.toHiragara(words)
 
       words.forEach((word, index) => {
         this.items.push({
           origin: word,
-          hira: japanese.hiraganaWords[word],
+          hira: japanese.hiraganaWords[word]
         })
       })
     }
