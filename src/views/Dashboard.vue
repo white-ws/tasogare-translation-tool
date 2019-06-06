@@ -102,8 +102,6 @@ export default {
   methods: {
     onFileInput (event) {
       this.loading.status = true
-      const key = process.env.VUE_APP_KEY
-      let items = []
 
       const reader = new io.Reader(event.target.files[0], () => {
         let self = this;

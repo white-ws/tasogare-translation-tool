@@ -5,8 +5,6 @@ const kuroshiro = new Kuroshiro();
 
 export class Japanese {
     hiraganaWords = {};
-    constructor() {
-    }
 
     async toHiragara(words) {
         if (!words) return;
