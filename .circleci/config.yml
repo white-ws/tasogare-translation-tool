@@ -22,6 +22,7 @@ jobs:
           name: Make production build
           command: |
             echo VUE_APP_KEY=${GOOGLE_KEY} >> .env
+            echo VUE_APP_CLIENT_KEY=${CLIENT_KEY} >> .env
             npm run build
       - persist_to_workspace:
           root: .

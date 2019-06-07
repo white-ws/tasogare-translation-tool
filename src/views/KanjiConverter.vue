@@ -95,6 +95,13 @@ export default {
           words.push(reader.next())
         }
 
+        if (words.length > 0 && words[0] !== process.env.VUE_APP_CLIENT_KEY) {
+          this.$toastr.error('Oops! Please check your password!')
+          this.loading.status = false
+          return
+        }
+        words.shift()
+
         this.onProcessInput(words)
           .then(() => {
             let writer = new io.Writer()
