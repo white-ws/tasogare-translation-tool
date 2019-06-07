@@ -96,42 +96,50 @@ export default {
   methods: {
     onFileInput (event) {
       this.loading.status = true
-      const key = process.env.VUE_APP_KEY
-      let items = []
 
       const reader = new io.Reader(event.target.files[0], () => {
+        let self = this
+        let words = []
+
         while (reader.hasNext()) {
-          var word = reader.next()
-          items.push(word)
+          words.push(reader.next())
         }
 
-        let cloudApi = new api.GoogleCloud(key, items)
-        let self = this
-        cloudApi
-          .trans()
-          .then(res => {
-            cloudApi.words.forEach((item, index) => {
-              self.items.push({
-                origin: cloudApi.words[index],
-                vietnam: cloudApi.vietnamese[index],
-                english: cloudApi.english[index],
-                englishToVn: cloudApi.englishToVn[index],
-                chinese: cloudApi.chinese[index],
-                chineseToVn: cloudApi.chineseToVn[index]
-              })
-            })
-
-            this.items = self.items
+        if (words.length > 0 && words[0] !== process.env.VUE_APP_CLIENT_KEY) {
+          this.$toastr.error('Oops! Please check your password!')
+          this.loading.status = false
+          return
+        }
+        words.shift()
+        this.onProcessInput(words)
+          .then(() => {
             let writer = new io.Writer()
             writer.save(self.items)
             this.$toastr.success('Done!')
           })
-          .catch(() => {
+          .catch((res) => {
             this.$toastr.error('Oops! Something unexpected happened!')
           })
           .then(() => {
             this.loading.status = false
           })
+      })
+    },
+
+    async onProcessInput (words) {
+      const key = process.env.VUE_APP_KEY
+      let cloudApi = new api.GoogleCloud(key, words)
+      await cloudApi.trans()
+
+      words.forEach((word, index) => {
+        this.items.push({
+          origin: cloudApi.words[index],
+          vietnam: cloudApi.vietnamese[index],
+          english: cloudApi.english[index],
+          englishToVn: cloudApi.englishToVn[index],
+          chinese: cloudApi.chinese[index],
+          chineseToVn: cloudApi.chineseToVn[index]
+        })
       })
     }
   }

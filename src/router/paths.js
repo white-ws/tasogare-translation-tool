@@ -7,5 +7,9 @@ export default [
   {
     path: '/dashboard',
     view: 'Dashboard'
+  },
+  {
+    path: '/kanji-converter',
+    view: 'KanjiConverter'
   }
 ]

@@ -31,13 +31,14 @@ export class Reader {
 
 export class Writer {
   save (items) {
-    var content = 'origin,vietnam,english,englishToVn,chinese,chineseToVn\n'
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i]
-      var line = item.origin + ',' + item.vietnam + ',' + item.english + ',' + item.englishToVn + ',' + item.chinese + ',' + item.chineseToVn + '\n'
+    let header = ''
+    let content = ''
+    items.forEach((item, index) => {
+      if (index === 0) header = Object.keys(item).toString() + '\n'
+      let line = Object.values(item).toString() + '\n'
       content = content.concat(line)
-    }
-
+    })
+    content = header.concat(content)
     this.download(content, 'result.csv', 'text/plain')
   }
 
