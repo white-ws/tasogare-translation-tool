@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "chartist": "0.11.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "kuroshiro": "^1.1.2",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "node-sass": "^4.9.3",
